@@ -1,0 +1,4 @@
+bs4==0.0.1
+selenium==3.6.0
+MySQL-python>=1.2.3
+peewee==2.10.2
