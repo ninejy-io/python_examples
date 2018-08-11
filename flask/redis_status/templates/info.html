@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <style type="text/css">
+        div {
+            float: left;
+        }
+    </style>
+</head>
+<body>
+<!-- background: #f2f2f2; margin: center; -->
+<div style="width: 1280px;">
+    <div id="main1" style="width: 600px;height:400px;"></div>
+    <div id="main2" style="width: 600px;height:400px;"></div>
+    <div id="main3" style="width: 600px;height:400px;"></div>
+    <div id="main4" style="width: 600px;height:400px;"></div>
+    <button id="refresh">刷新</button>
+
+</div>
+
+<script type="text/javascript" src="/static/echarts.min.js"></script>
+<script src="https://cdn.bootcss.com/jquery/2.2.1/jquery.min.js"></script>
+<script type="text/javascript">
+    var myChart1 = echarts.init(document.getElementById('main1'));
+    var myChart2 = echarts.init(document.getElementById('main2'));
+    var myChart3 = echarts.init(document.getElementById('main3'));
+    var myChart4 = echarts.init(document.getElementById('main4'));
+
+    var colorList = [
+        '#C1232B','#B5C334','#FCCE10','#E87C25','#27727B',
+        '#FE8463','#9BCA63','#FAD860','#F3A43B','#60C0DD',
+        '#D7504B','#C6E579','#F4E001','#F0805A','#26C0C0'
+    ];
+    myChart1.setOption({
+        title: {
+            text: 'Top Keys'
+        },
+        tooltip: {},
+        legend: {
+            data:['Top_Keys']
+        },
+        xAxis: {
+            data: []
+        },
+        yAxis: {},
+        series: [{
+            name: 'Top_Keys',
+            type: 'bar',
+            itemStyle: {
+                normal: {
+                    color: function(params) {
+                        return colorList[params.dataIndex]
+                    }//,
+//                 label: {
+//                     show: true,
+//                     position: 'top',
+//                     formatter: '{c}'
+//                     formatter: '{b}\n{c}'
+//                     }
+                }
+            },
+            data: []
+        }]
+    });
+
+    myChart2.setOption({
+        title: {
+            text: 'Top Commands'
+        },
+        tooltip: {},
+        legend: {
+            data:['Top_Commands']
+        },
+        xAxis: {
+            data: []
+        },
+        yAxis: {},
+        series: [{
+            name: 'Top_Commands',
+            type: 'bar',
+            itemStyle: {
+                normal: {
+                    color: function(params) {
+                        return colorList[params.dataIndex]
+                    }
+                }
+            },
+            data: []
+        }]
+    });
+
+    myChart3.setOption({
+        // title: {
+        //     text: 'Heaviest Commands(microsecs)'
+        // },
+        tooltip: {},
+        legend: {
+            data:['Heaviest_Commands']
+        },
+        xAxis: {
+            data: []
+        },
+        yAxis: {},
+        series: [{
+            name: 'Heaviest_Commands',
+            type: 'bar',
+            itemStyle: {
+                normal: {
+                    color: function(params) {
+                        return colorList[params.dataIndex]
+                    }
+                }
+            },
+            data: []
+        }]
+    });
+
+    myChart4.setOption({
+        // title: {
+        //     text: 'Command Time(microsecs)'
+        // },
+        tooltip: {},
+        legend: {
+            data:['Command_Time']
+        },
+        xAxis: {
+            data: []
+        },
+        yAxis: {},
+        series: [{
+            name: 'Command_Time',
+            type: 'bar',
+            itemStyle: {
+                normal: {
+                    color: function(params) {
+                        return colorList[params.dataIndex]
+                    }
+                }
+            },
+            data: []
+        }]
+    });
+
+    function loadInfo() {
+        $.get('/get_info', function(data){
+            myChart1.setOption({
+                xAxis: {
+                    data: data.TopKeys.top_keys
+                },
+                series: [{
+                    // 根据名字对应到相应的系列
+                    name: 'Top_Keys',
+                    data: data.TopKeys.data
+                }]
+            });
+            myChart2.setOption({
+                xAxis: {
+                    data: data.TopCommands.top_commands
+                },
+                series: [{
+                    name: 'Top_Commands',
+                    data: data.TopCommands.data
+                }]
+            });
+            myChart3.setOption({
+                xAxis: {
+                    data: data.HeaviestCommands.heaviest_commands
+                },
+                series: [{
+                    name: 'Heaviest_Commands',
+                    data: data.HeaviestCommands.data
+                }]
+            });
+            myChart4.setOption({
+                xAxis: {
+                    data: data.CommandTime.command_time
+                },
+                series: [{
+                    name: 'Command_Time',
+                    data: data.CommandTime.data
+                }]
+            });
+        });
+    }
+
+    $('#refresh').click(function() {
+        loadInfo();
+    });
+
+    $(function() {
+        loadInfo();
+    })
+</script>
+
+</body>
+</html>

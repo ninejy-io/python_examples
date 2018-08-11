@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title></title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='layui/css/layui.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="body">
+<button class="btn layui-btn" id="buildImage">镜像构建</button>
+<button class="btn layui-btn" id="pullImage">镜像拉取</button>
+<table class="layui-table">
+<thead>
+    <tr>
+        <th>镜像Tag</th>
+        <th>镜像名字</th>
+        <th>构建时间</th>
+        <th>操作</th>
+    </tr>
+</thead>
+<tbody>
+    {% for img in images %}
+    <tr>
+        <td>{{ img[0] }}</td>
+        <td>{{ img[1] }}</td>
+        <td>{{ img[2] }}</td>
+        <td>
+        <a class="layui-btn layui-btn-success layui-btn-mini" href="javascript:void(0);" onclick="pushImage('{{ img[1] }}')">推送</a>
+        <a class="layui-btn layui-btn-danger layui-btn-mini" href="javascript:void(0);" onclick="delImage('{{ img[1] }}')">删除</a>
+        </td>
+    </tr>
+    {% endfor %}
+</tbody>
+</table>
+<input id="cur_page" style="display: none" type="number" value="{{ cur_page }}">
+<input id="total_page" style="display: none" type="number" value="{{ total_page }}">
+<div id="demo1"></div>
+
+<script type="text/javascript" src="{{ url_for('static', filename='layui/layui.js') }}"></script>
+<script src="https://cdn.bootcss.com/jquery/2.2.1/jquery.min.js"></script>
+<script type="text/javascript">
+    function delImage(name) {
+        var layer = layui.layer;
+        layer.alert('确认要删除吗?', function() {
+            $.get('/delete/', {'name': name},
+                    function(res) {
+                        if (res=='ok') {
+                            window.location.href = '/images/';
+                    }
+            });
+        });
+    }
+
+    function pushImage(name) {
+        var layer = layui.layer;
+        var index = layer.load(1, {shade: [0.1,'#fff']});
+        $.ajax({
+            url: '/push/',
+            type: 'POST',
+            dataType: 'json',
+            data: {'name': name},
+            success: function(res){
+                layer.alert('推送成功!', function(){
+                    window.location.reload();
+                    layer.close(index);
+                });
+            }
+        });
+    }
+
+    layui.use(['form', 'laypage'], function(){
+        var layer = layui.layer,
+            laypage = layui.laypage,
+            $ = layui.jquery;
+
+        $("#buildImage").click(function() {
+            layer.open({
+                title: '镜像构建',
+                type: 2,
+                area: ['450px', '400px'],
+                fixed: false,
+                maxmin: true,
+                content: '/build/'
+            });
+        });
+
+        $("#pullImage").click(function() {
+            layer.open({
+                title: '镜像拉取',
+                type: 2,
+                area: ['450px', '400px'],
+                fixed: false,
+                maxmin: true,
+                content: '/pull/'
+            });
+        });
+
+        laypage({
+            cont: 'demo1',
+            pages: $("#total_page").val(),
+            groups: 5,
+            curr: $("#cur_page").val(),
+            first: false,
+            last: false,
+            jump: function(obj, first){
+                if(!first){
+                    // layer.msg('第 '+ obj.curr +' 页');
+                    window.location.href = '/images/?page=' + obj.curr;
+                }
+            }
+        });
+    });
+</script>
+</body>
+</html>
