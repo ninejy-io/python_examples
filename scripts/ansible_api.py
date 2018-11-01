@@ -9,13 +9,15 @@ from ansible.executor.playbook_executor import PlaybookExecutor
 from ansible.plugins.callback import CallbackBase
 from ansible.inventory.host import Host, Group
 
+host_list_file = "/etc/ansible/hosts"
+
 
 class MyInventory:
 
     def __init__(self, resource, loader, variable_manager):
         self.resource = resource
         self.loader = DataLoader()
-        self.inventory = InventoryManager(loader=self.loader, sources=[])
+        self.inventory = InventoryManager(loader=self.loader, sources=[host_list_file])
         self.variable_manager = VariableManager(loader=self.loader, inventory=self.inventory)
         self.dynamic_inventory()
 
@@ -260,10 +262,10 @@ class AnsibleRunner(object):
 
 if __name__ == '__main__':
     resource =  {
-        "dynamic_host": {
+        "all": {
             "hosts": [
-                {'username': u'root', 'password': '123456', 'ip': '192.168.1.108','hostname':'nginx01','port':'22'},
-                {"hostname":"778da6afsdwf","ip": "192.168.1.109", "port": "22", "username": "root", "password":"123456"}                          ],
+                {"hostname":"192.168.1.202", "ip": "192.168.1.202", "port": "22"},
+                {"hostname":"192.168.1.203", "ip": "192.168.1.203", "port": "22"}                          ],
             "vars": {
                 "var1":"ansible",
                 "var2":"saltstack"
@@ -273,10 +275,10 @@ if __name__ == '__main__':
     # resource = [{"hostname": "127.0.0.1"}, {"hostname": "192.168.1.101"}]
     rbt = AnsibleRunner(resource)
     # Ansible Adhoc
-    rbt.run_model(host_list=['127.0.0.1', '172.31.39.251', 'robert'],module_name='shell',module_args="ls /tmp")
-    data = rbt.get_model_result()
-    print(data)
+    # rbt.run_model(host_list=['127.0.0.1', '172.31.39.251', 'robert'],module_name='shell',module_args="ls /tmp")
+    # data = rbt.get_model_result()
+    # print(data)
     # Ansible playbook
-    rbt.run_playbook(playbook_path='/etc/ansible/playbook/test.yml', extra_vars={"name": "robert","version": "123456"})
+    rbt.run_playbook(playbook_path='test.yml', extra_vars={"name": "robert","version": "123456"})
     data2 = rbt.get_playbook_result()
     print(data2)
