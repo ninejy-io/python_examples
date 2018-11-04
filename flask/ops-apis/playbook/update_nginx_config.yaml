@@ -1,0 +1,15 @@
+---
+- hosts: production_nodes
+  gather_facts: False
+  tasks:
+  - name: clone or update nginx configuration file
+    git:
+      repo: "{{ git_address }}"
+      dest: /etc/openresty/nginx/conf
+      version: "{{ git_version }}"
+      clone: yes
+      update: yes
+
+  - name: reload nginx
+    # shell: /etc/init.d/openresty reload
+    shell: /usr/local/openresty/nginx/sbin/nginx -s reload

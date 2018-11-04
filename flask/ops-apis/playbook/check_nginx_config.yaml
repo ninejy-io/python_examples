@@ -1,0 +1,19 @@
+---
+- hosts: check_nodes
+  gather_facts: False
+  tasks:
+  - name: remove directory /etc/openresty/nginx/conf
+    file:
+      path: /etc/openresty/nginx/conf
+      state: absent
+
+  - name: clone nginx configuration file
+    git:
+      repo: "{{ git_address }}"
+      dest: /etc/openresty/nginx/conf
+      version: "{{ git_version }}"
+      clone: yes
+
+  - name: check nginx configuration
+    # shell: /etc/init.d/openresty test
+    shell: /usr/local/openresty/nginx/sbin/nginx -t
