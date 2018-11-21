@@ -19,7 +19,7 @@ param:
 ---
 - ###### update nginx config
 ```shell
-url: http://ip:port/checkconfig
+url: http://ip:port/updateconfig
 method: POST
 param:
 {
