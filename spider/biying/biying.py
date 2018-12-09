@@ -18,7 +18,7 @@ def get_biying_index_image(zh=True):
 
     r = requests.get(index_url, headers=headers)
 
-    for img_url in re.findall(re_img, r.content):
+    for img_url in re.findall(re_img, r.text):
         res = requests.get(base_url + img_url, headers=headers)
         with open(file_name, 'ab+') as fd:
             for chunk in res.iter_content(chunk_size=1024):
