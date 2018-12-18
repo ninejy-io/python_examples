@@ -253,7 +253,7 @@ class AnsibleRunner(object):
             self.results_raw['status'][host] = result
 
         for host, result in self.callback.task_skipped.items():
-            self.results_raw['skipped'][host] = result
+            self.results_raw['skipped'][host] = result._result
 
         for host, result in self.callback.task_unreachable.items():
             self.results_raw['unreachable'][host] = result._result
