@@ -1,0 +1,11 @@
+requests
+pyecharts
+echarts-countries-pypkg
+echarts-cities-pypkg
+echarts-china-provinces-pypkg
+echarts-china-cities-pypkg
+echarts-china-counties-pypkg
+echarts-china-misc-pypkg
+jieba
+matplotlib
+wordcloud
