@@ -7,8 +7,8 @@ from email.mime.text import MIMEText
 from email.header import Header
 
 local_ip = "172.31.39.251"
-sender = "1590093363@163.com"
-receivers = ["3245935173@qq.com"]
+sender = "send@163.com"
+receivers = ["recv@qq.com"]
 
 
 def send_mail(info, num=0):
@@ -20,7 +20,7 @@ def send_mail(info, num=0):
     server = smtplib.SMTP()
     server.connect('smtp.163.com', '25')
     server.starttls()
-    server.login(sender, 'service@163com')
+    server.login(sender, 'password-xxx')
     server.sendmail(sender, receivers, msg.as_string())
     server.quit()
 
