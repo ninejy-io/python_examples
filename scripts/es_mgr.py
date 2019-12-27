@@ -76,8 +76,8 @@ es = Elasticsearch(['192.168.0.13:9200'], sniff_on_start=True)
 # body = {"query": {"match_all": {}, "sort": {"age": {"order": "asc"}}}}
 # es.search(index='my-index', body=body)  # order by age asc(up)/ desc(down)
 
-# search filter_path
-# ###es.search(index='my-index', filter_path=['hits.hits._id'])
+# search _source_includes
+# es.search(index='my-index', _source_includes=['_id', 'name'])
 
 # count result
 # es.count(doc_type='test-type', index='my-index', body={"query": {"match_all": {}}})
