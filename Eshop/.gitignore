@@ -1,0 +1,7 @@
+__pycache__
+/**/migrations/00*.py
+media/
+db.sqlite3
+e-store
+static
+templates
