@@ -22,4 +22,4 @@ def migrate_jenkins_view_job(view_name):
 
 
 if __name__ == "__main__":
-    migrate_jenkins_view_job(view_name)
+    migrate_jenkins_view_job('my_view_name')
