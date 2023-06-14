@@ -1,21 +1,42 @@
-# -*- coding: utf-8 -*-
+# coding: utf-8
+
+lis = [3, 9, 22, 1, 23, 19, 15, 27, 8, 6]
 
 
-def bubble_sort(li):
-    print('begin:', li)
-    n = len(li)
-    for i in range(0, n):
-        count = 0
-        for j in range(0, n-1-i):
-            if li[j] > li[j+1]:
-                li[j], li[j+1] = li[j+1], li[j]
-                count += 1
-        if count == 0:
-            break
-        print('count:', count)
-    print('end:', li)
+def select_sort(arr: list):
+    length = len(arr)
+    if length <= 1:
+        return arr[0]
+    else:
+        for i in range(length-1):
+            min_index = i
+            for j in range(i+1, length):
+                if arr[min_index] > arr[j]: # 找出最小值
+                    min_index = j
+
+            if i != min_index:
+                arr[i], arr[min_index] = arr[min_index], arr[i]
+
+        return arr
 
 
-a = [3, 900, 2, 4, 1, 6, 7, 8, 34, 22, 55, 10, 200, 56, 89, 93, 23, 44, 36, 67, 192, 4000, 298, 322]
+def bubble_sort(arr: list):
+    length = len(arr)
+    if length <= 1:
+        return arr
+    else:
+        for i in range(length-1):
+            need_exchange = False
+            for j in range(length-i-1):
+                if arr[j] > arr[j+1]: # 每次循环把小的放左侧
+                    arr[j], arr[j+1] = arr[j+1], arr[j]
+                    need_exchange = True
 
-bubble_sort(a)
+            if not need_exchange:
+                break
+
+        return arr
+
+
+# print(select_sort(lis))
+print(bubble_sort(lis))
