@@ -21,8 +21,8 @@ def parse_page(res):
 
 if __name__ == '__main__':
     start = time.time()
-    pool = ThreadPoolExecutor()
-    # pool = ProcessPoolExecutor()
+    pool = ThreadPoolExecutor(max_workers=4)
+    # pool = ProcessPoolExecutor(max_workers=4)
     urls = [
         'https://www.baidu.com',
         'http://www.qq.com',
